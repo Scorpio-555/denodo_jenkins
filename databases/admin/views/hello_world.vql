@@ -1,2 +1,2 @@
-﻿CREATE OR REPLACE VIEW hello_world AS SELECT 'Hello World' AS message FROM dual() CONTEXT ('formatted' = 'yes');
+﻿CREATE OR REPLACE VIEW hello_world AS SELECT 'hello world' AS message FROM dual() CONTEXT ('formatted' = 'yes');
 
