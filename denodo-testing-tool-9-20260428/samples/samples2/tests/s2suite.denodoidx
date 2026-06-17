@@ -1,0 +1,6 @@
+# ------------------------------------------------------------------------
+# This index file will simply be used to determine the order in which the
+# two sub-suites in samples2 will be executed.
+# ------------------------------------------------------------------------
+suite22
+suite21

@@ -1,0 +1,989 @@
+﻿# ----------------------------------------------------------------------------
+# DENODO TEST SAMPLES VDP DATABASE: INITIALIZATION SCRIPT
+# ----------------------------------------------------------------------------
+# Please read and modify the accompanying .properties file before importing!
+# ----------------------------------------------------------------------------
+#
+# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+ENTER SINGLE USER MODE;
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# 
+# #######################################
+# USER CREATION
+# #######################################
+DROP USER IF EXISTS denodotestsamples;
+
+CREATE USER denodotestsamples '${users.denodotestsamples.PASSWORD}'  ${users.denodotestsamples.PASSWORD.ENCRYPTED} ${users.denodotestsamples.PASSWORD.ALGORITHM}  'User for the Denodo Test Samples database';
+
+# #######################################
+# ROLE CREATION
+# #######################################
+# No roles
+
+# 0 ====================================================================
+
+# #######################################
+# DATABASE
+# #######################################
+DROP DATABASE IF EXISTS denodotestsamples;
+
+CREATE DATABASE denodotestsamples 'Virtual DataBase supporting the Denodo Testing Tool sample test sets';
+
+CONNECT DATABASE denodotestsamples;
+
+# #######################################
+# LISTENERS JMS
+# #######################################
+# No listeners jms
+# #######################################
+# DATASOURCES
+# #######################################
+DROP DATASOURCE JDBC IF EXISTS acme_crm CASCADE;
+
+CREATE DATASOURCE JDBC acme_crm
+    DRIVERCLASSNAME = 'org.sqlite.JDBC'
+    DATABASEURI = '${databases.denodotestsamples.datasources.jdbc.acme_crm.DATABASEURI}'
+    USERNAME = '${databases.denodotestsamples.datasources.jdbc.acme_crm.USERNAME}'
+    USERPASSWORD = ''
+    CLASSPATH = ''
+    DATABASENAME = 'SQLite'
+    DATABASEVERSION = ''
+    FETCHSIZE = 1000
+    BATCHINSERTSIZE = 200
+    VALIDATIONQUERY = ''
+    INITIALSIZE = 4
+    MAXIDLE = -1
+    MINIDLE = 0
+    MAXACTIVE = 20
+    EXHAUSTEDACTION = 1
+    TESTONBORROW = false
+    TESTONRETURN = false
+    TESTWHILEIDLE = false
+    TIMEBETWEENEVICTION = -1
+    NUMTESTPEREVICTION = 3
+    MINEVICTABLETIME = 1800000
+    POOLPREPAREDSTATEMENTS = false
+    MAXSLEEPINGPS = 4
+    INITIALCAPACITYPS = 8;
+
+CHOWN admin DATASOURCE JDBC acme_crm LASTMODIFICATIONUSER admin;
+
+DROP DATASOURCE JDBC IF EXISTS sakila CASCADE;
+
+CREATE DATASOURCE JDBC sakila
+    DRIVERCLASSNAME = 'org.sqlite.JDBC'
+    DATABASEURI = '${databases.denodotestsamples.datasources.jdbc.sakila.DATABASEURI}'
+    USERNAME = '${databases.denodotestsamples.datasources.jdbc.sakila.USERNAME}'
+    USERPASSWORD = ''
+    CLASSPATH = ''
+    DATABASENAME = 'SQLite'
+    DATABASEVERSION = ''
+    FETCHSIZE = 1000
+    BATCHINSERTSIZE = 200
+    VALIDATIONQUERY = ''
+    INITIALSIZE = 4
+    MAXIDLE = -1
+    MINIDLE = 0
+    MAXACTIVE = 20
+    EXHAUSTEDACTION = 1
+    TESTONBORROW = false
+    TESTONRETURN = false
+    TESTWHILEIDLE = false
+    TIMEBETWEENEVICTION = -1
+    NUMTESTPEREVICTION = 3
+    MINEVICTABLETIME = 1800000
+    POOLPREPAREDSTATEMENTS = false
+    MAXSLEEPINGPS = 4
+    INITIALCAPACITYPS = 8;
+
+CHOWN admin DATASOURCE JDBC sakila LASTMODIFICATIONUSER admin;
+
+# #######################################
+# DATABASE CONFIGURATION
+# #######################################
+ALTER DATABASE denodotestsamples
+  CHARSET DEFAULT;
+
+# #######################################
+# WRAPPERS
+# #######################################
+DROP WRAPPER JDBC IF EXISTS acme_address CASCADE;
+
+CREATE WRAPPER JDBC acme_address
+    DATASOURCENAME=acme_crm
+    SQLSENTENCE='select * from address'   
+    OUTPUTSCHEMA (
+        client_identifier = 'client_identifier' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        street = 'street' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  NOT SORTABLE NOT UPDATEABLE,
+        city = 'city' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  NOT SORTABLE NOT UPDATEABLE,
+        zip = 'zip' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  NOT SORTABLE NOT UPDATEABLE,
+        state = 'state' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  NOT SORTABLE NOT UPDATEABLE,
+        primary_phone = 'primary_phone' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  NOT SORTABLE NOT UPDATEABLE,
+        country = 'country' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC acme_address LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS acme_client CASCADE;
+
+CREATE WRAPPER JDBC acme_client
+    DATASOURCENAME=acme_crm
+    SQLSENTENCE='select * from client'   
+    OUTPUTSCHEMA (
+        client_id = 'client_id' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        name = 'name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  NOT SORTABLE NOT UPDATEABLE,
+        surname = 'surname' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  NOT SORTABLE NOT UPDATEABLE,
+        client_type = 'client_type' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='2')  NOT SORTABLE NOT UPDATEABLE,
+        company_code = 'company_code' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT SORTABLE NOT UPDATEABLE,
+        ssn = 'ssn' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC acme_client LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS acme_client_company CASCADE;
+
+CREATE WRAPPER JDBC acme_client_company
+    DATASOURCENAME=acme_crm
+    SQLSENTENCE='select * from client_company'   
+    OUTPUTSCHEMA (
+        client_id = 'client_id' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        company_code = 'company_code' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT NULL NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC acme_client_company LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS acme_client_type CASCADE;
+
+CREATE WRAPPER JDBC acme_client_type
+    DATASOURCENAME=acme_crm
+    SQLSENTENCE='select * from client_type'   
+    OUTPUTSCHEMA (
+        code = 'code' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='2')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        value = 'value' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='100')  ESCAPE NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC acme_client_type LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_actor CASCADE;
+
+CREATE WRAPPER JDBC sakila_actor
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from actor'   
+    OUTPUTSCHEMA (
+        actor_id = 'actor_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        first_name = 'first_name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE,
+        last_name = 'last_name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_actor LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_address CASCADE;
+
+CREATE WRAPPER JDBC sakila_address
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from address'   
+    OUTPUTSCHEMA (
+        address_id = 'address_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        address = 'address' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT SORTABLE NOT UPDATEABLE,
+        address2 = 'address2' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT SORTABLE NOT UPDATEABLE,
+        district = 'district' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='20')  NOT SORTABLE NOT UPDATEABLE,
+        city_id = 'city_id' :'java.lang.Short' (sourcetypename='SMALLINT', sourcetypeid='5', sourcetypedecimals='0', sourcetypesize='5')  NOT SORTABLE NOT UPDATEABLE,
+        postal_code = 'postal_code' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='10')  NOT SORTABLE NOT UPDATEABLE,
+        phone = 'phone' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='20')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_address LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_category CASCADE;
+
+CREATE WRAPPER JDBC sakila_category
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from category'   
+    OUTPUTSCHEMA (
+        category_id = 'category_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        name = 'name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='25')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_category LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_city CASCADE;
+
+CREATE WRAPPER JDBC sakila_city
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from city'   
+    OUTPUTSCHEMA (
+        city_id = 'city_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        city = 'city' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT SORTABLE NOT UPDATEABLE,
+        country_id = 'country_id' :'java.lang.Short' (sourcetypename='SMALLINT', sourcetypeid='5', sourcetypedecimals='0', sourcetypesize='5')  NOT SORTABLE NOT UPDATEABLE        
+    );
+
+CHOWN admin WRAPPER JDBC sakila_city LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_country CASCADE;
+
+CREATE WRAPPER JDBC sakila_country
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from country'   
+    OUTPUTSCHEMA (
+        country_id = 'country_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        country = 'country' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_country LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_customer CASCADE;
+
+CREATE WRAPPER JDBC sakila_customer
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from customer'   
+    OUTPUTSCHEMA (
+        customer_id = 'customer_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        store_id = 'store_id' :'java.lang.Byte' (sourcetypename='TINYINT', sourcetypeid='-6', sourcetypedecimals='0', sourcetypesize='3')  NOT SORTABLE NOT UPDATEABLE,
+        first_name = 'first_name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE,
+        last_name = 'last_name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE,
+        email = 'email' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT SORTABLE NOT UPDATEABLE,
+        address_id = 'address_id' :'java.lang.Short' (sourcetypename='SMALLINT', sourcetypeid='5', sourcetypedecimals='0', sourcetypesize='5')  NOT SORTABLE NOT UPDATEABLE,
+        active = 'active' :'java.lang.Byte' (sourcetypename='TINYINT', sourcetypeid='-6', sourcetypedecimals='0', sourcetypesize='1')  NOT SORTABLE NOT UPDATEABLE        
+    );
+
+CHOWN admin WRAPPER JDBC sakila_customer LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_film CASCADE;
+
+CREATE WRAPPER JDBC sakila_film
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from film'   
+    OUTPUTSCHEMA (
+        film_id = 'film_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        title = 'title' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='255')  NOT SORTABLE NOT UPDATEABLE,
+        description = 'description' :'java.lang.String' (sourcetypename='TEXT', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        release_year = 'release_year' :'java.lang.String' (sourcetypename='YEAR', sourcetypeid='0', sourcetypedecimals='0', sourcetypesize='4')  NOT SORTABLE NOT UPDATEABLE,
+        language_id = 'language_id' :'java.lang.Byte' (sourcetypename='TINYINT', sourcetypeid='-6', sourcetypedecimals='0', sourcetypesize='3')  NOT SORTABLE NOT UPDATEABLE,
+        original_language_id = 'original_language_id' :'java.lang.Byte' (sourcetypename='TINYINT', sourcetypeid='-6', sourcetypedecimals='0', sourcetypesize='3')  NOT SORTABLE NOT UPDATEABLE,
+        rental_duration = 'rental_duration' :'java.lang.Byte' (sourcetypename='TINYINT', sourcetypeid='-6', sourcetypedecimals='0', sourcetypesize='3')  NOT SORTABLE NOT UPDATEABLE,
+        rental_rate = 'rental_rate' :'java.lang.Double' (sourcetypename='DECIMAL', sourcetypeid='3', sourcetypedecimals='2', sourcetypesize='4')  NOT SORTABLE NOT UPDATEABLE,
+        length = 'length' :'java.lang.Short' (sourcetypename='SMALLINT', sourcetypeid='5', sourcetypedecimals='0', sourcetypesize='5')  NOT SORTABLE NOT UPDATEABLE,
+        replacement_cost = 'replacement_cost' :'java.lang.Double' (sourcetypename='DECIMAL', sourcetypeid='3', sourcetypedecimals='2', sourcetypesize='5')  NOT SORTABLE NOT UPDATEABLE,
+        rating = 'rating' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='6')  NOT SORTABLE NOT UPDATEABLE,
+        special_features = 'special_features' :'java.lang.String' (sourcetypename='TEXT', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_film LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_film_actor CASCADE;
+
+CREATE WRAPPER JDBC sakila_film_actor
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from film_actor'   
+    OUTPUTSCHEMA (
+        actor_id = 'actor_id' :'java.lang.Short' (sourcetypename='SMALLINT', sourcetypeid='5', sourcetypedecimals='0', sourcetypesize='5')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        film_id = 'film_id' :'java.lang.Short' (sourcetypename='SMALLINT', sourcetypeid='5', sourcetypedecimals='0', sourcetypesize='5')  NOT NULL NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_film_actor LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_film_category CASCADE;
+
+CREATE WRAPPER JDBC sakila_film_category
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from film_category'   
+    OUTPUTSCHEMA (
+        film_id = 'film_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        category_id = 'category_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE        
+    );
+
+CHOWN admin WRAPPER JDBC sakila_film_category LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_inventory CASCADE;
+
+CREATE WRAPPER JDBC sakila_inventory
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from inventory'   
+    OUTPUTSCHEMA (
+        inventory_id = 'inventory_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        film_id = 'film_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        store_id = 'store_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE        
+    );
+
+CHOWN admin WRAPPER JDBC sakila_inventory LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_language CASCADE;
+
+CREATE WRAPPER JDBC sakila_language
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from language'   
+    OUTPUTSCHEMA (
+        language_id = 'language_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        name = 'name' :'java.lang.String' (sourcetypename='CHAR', sourcetypeid='0', sourcetypedecimals='0', sourcetypesize='20')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_language LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_payment CASCADE;
+
+CREATE WRAPPER JDBC sakila_payment
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from payment'   
+    OUTPUTSCHEMA (
+        payment_id = 'payment_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        customer_id = 'customer_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        staff_id = 'staff_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        rental_id = 'rental_id' :'java.lang.Integer' (sourcetypename='INT', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='11')  NOT SORTABLE NOT UPDATEABLE,
+        amount = 'amount' :'java.lang.Double' (sourcetypename='DECIMAL', sourcetypeid='3', sourcetypedecimals='2', sourcetypesize='5')  NOT SORTABLE NOT UPDATEABLE        
+    );
+
+CHOWN admin WRAPPER JDBC sakila_payment LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_rental CASCADE;
+
+CREATE WRAPPER JDBC sakila_rental
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from rental'   
+    OUTPUTSCHEMA (
+        rental_id = 'rental_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        inventory_id = 'inventory_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        customer_id = 'customer_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        staff_id = 'staff_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_rental LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_staff CASCADE;
+
+CREATE WRAPPER JDBC sakila_staff
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from staff'   
+    OUTPUTSCHEMA (
+        staff_id = 'staff_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        first_name = 'first_name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE,
+        last_name = 'last_name' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='45')  NOT SORTABLE NOT UPDATEABLE,
+        address_id = 'address_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        picture = 'picture' :'java.sql.Blob' (sourcetypename='BLOB', sourcetypeid='2004', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        email = 'email' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='50')  NOT SORTABLE NOT UPDATEABLE,
+        store_id = 'store_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        active = 'active' :'java.lang.Byte' (sourcetypename='TINYINT', sourcetypeid='-6', sourcetypedecimals='0', sourcetypesize='1')  NOT SORTABLE NOT UPDATEABLE,
+        username = 'username' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='16')  NOT SORTABLE NOT UPDATEABLE,
+        password = 'password' :'java.lang.String' (sourcetypename='VARCHAR', sourcetypeid='12', sourcetypedecimals='0', sourcetypesize='40')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_staff LASTMODIFICATIONUSER admin;
+
+DROP WRAPPER JDBC IF EXISTS sakila_store CASCADE;
+
+CREATE WRAPPER JDBC sakila_store
+    DATASOURCENAME=sakila
+    SQLSENTENCE='select * from store'   
+    OUTPUTSCHEMA (
+        store_id = 'store_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT NULL NOT SORTABLE NOT UPDATEABLE,
+        manager_staff_id = 'manager_staff_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE,
+        address_id = 'address_id' :'java.lang.Integer' (sourcetypename='INTEGER', sourcetypeid='4', sourcetypedecimals='0', sourcetypesize='0')  NOT SORTABLE NOT UPDATEABLE
+    );
+
+CHOWN admin WRAPPER JDBC sakila_store LASTMODIFICATIONUSER admin;
+
+# #######################################
+# STORED PROCEDURES
+# #######################################
+# No stored procedures
+# #######################################
+# TYPES
+# #######################################
+# No types
+# #######################################
+# MAPS
+# #######################################
+# No maps
+# #######################################
+# BASE VIEWS
+# #######################################
+DROP VIEW IF EXISTS acme_address CASCADE;
+
+CREATE TABLE acme_address I18N us_pst (
+    client_identifier:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    street:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12'), 
+    city:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12'), 
+    zip:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12'), 
+    state:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12'), 
+    primary_phone:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12'), 
+    country:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12')
+);
+
+ALTER TABLE acme_address
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD acme_address(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD client_identifier NOS ZERO ()
+             ADD street NOS ZERO ()
+             ADD city NOS ZERO ()
+             ADD zip NOS ZERO ()
+             ADD state NOS ZERO ()
+             ADD primary_phone NOS ZERO ()
+             ADD country NOS ZERO ()
+        )
+        OUTPUTLIST (city, client_identifier, country, primary_phone, state, street, zip
+        )
+        WRAPPER (jdbc acme_address)
+    );
+
+CHOWN admin VIEW acme_address LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS acme_client CASCADE;
+
+CREATE TABLE acme_client I18N us_pst (
+    client_id:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    name:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12'), 
+    surname:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12'), 
+    client_type:text (sourcetypedecimals = '0', sourcetypesize = '2', sourcetypeid = '12'), 
+    company_code:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    ssn:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12')
+);
+
+ALTER TABLE acme_client
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD acme_client(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD client_id NOS ZERO ()
+             ADD name NOS ZERO ()
+             ADD surname NOS ZERO ()
+             ADD client_type NOS ZERO ()
+             ADD company_code NOS ZERO ()
+             ADD ssn NOS ZERO ()
+        )
+        OUTPUTLIST (client_id, client_type, company_code, name, ssn, surname
+        )
+        WRAPPER (jdbc acme_client)
+    );
+
+CHOWN admin VIEW acme_client LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS acme_client_company CASCADE;
+
+CREATE TABLE acme_client_company I18N us_pst (
+    client_id:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    company_code:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12')
+);
+
+ALTER TABLE acme_client_company
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD acme_client_company(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD client_id NOS ZERO ()
+             ADD company_code NOS ZERO ()
+        )
+        OUTPUTLIST (client_id, company_code
+        )
+        WRAPPER (jdbc acme_client_company)
+    );
+
+CHOWN admin VIEW acme_client_company LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS acme_client_type CASCADE;
+
+CREATE TABLE acme_client_type I18N us_pst (
+    code:text (sourcetypedecimals = '0', sourcetypesize = '2', sourcetypeid = '12'), 
+    value:text (sourcetypedecimals = '0', sourcetypesize = '100', sourcetypeid = '12')
+);
+
+ALTER TABLE acme_client_type
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD acme_client_type(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD code NOS ZERO ()
+             ADD value NOS ZERO ()
+        )
+        OUTPUTLIST (code, value
+        )
+        WRAPPER (jdbc acme_client_type)
+    );
+
+CHOWN admin VIEW acme_client_type LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_actor CASCADE;
+
+CREATE TABLE sakila_actor I18N us_pst (
+    actor_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    first_name:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12'), 
+    last_name:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12')
+);
+
+ALTER TABLE sakila_actor
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_actor(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD actor_id NOS ZERO ()
+             ADD first_name NOS ZERO ()
+             ADD last_name NOS ZERO ()
+        )
+        OUTPUTLIST (actor_id, first_name, last_name
+        )
+        WRAPPER (jdbc sakila_actor)
+    );
+
+CHOWN admin VIEW sakila_actor LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_address CASCADE;
+
+CREATE TABLE sakila_address I18N us_pst (
+    address_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    address:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    address2:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    district:text (sourcetypedecimals = '0', sourcetypesize = '20', sourcetypeid = '12'), 
+    city_id:int (sourcetypedecimals = '0', sourcetypesize = '5', sourcetypeid = '5'), 
+    postal_code:text (sourcetypedecimals = '0', sourcetypesize = '10', sourcetypeid = '12'), 
+    phone:text (sourcetypedecimals = '0', sourcetypesize = '20', sourcetypeid = '12')
+);
+
+ALTER TABLE sakila_address
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_address(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD address_id NOS ZERO ()
+             ADD address NOS ZERO ()
+             ADD address2 NOS ZERO ()
+             ADD district NOS ZERO ()
+             ADD city_id NOS ZERO ()
+             ADD postal_code NOS ZERO ()
+             ADD phone NOS ZERO ()
+        )
+        OUTPUTLIST (address, address2, address_id, city_id, district, phone, postal_code
+        )
+        WRAPPER (jdbc sakila_address)
+    );
+
+CHOWN admin VIEW sakila_address LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_category CASCADE;
+
+CREATE TABLE sakila_category I18N us_pst (
+    category_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    name:text (sourcetypedecimals = '0', sourcetypesize = '25', sourcetypeid = '12')
+);
+
+ALTER TABLE sakila_category
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_category(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD category_id NOS ZERO ()
+             ADD name NOS ZERO ()
+        )
+        OUTPUTLIST (category_id, name
+        )
+        WRAPPER (jdbc sakila_category)
+    );
+
+CHOWN admin VIEW sakila_category LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_city CASCADE;
+
+CREATE TABLE sakila_city I18N us_pst (
+    city_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    city:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    country_id:int (sourcetypedecimals = '0', sourcetypesize = '5', sourcetypeid = '5')
+);
+
+ALTER TABLE sakila_city
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_city(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD city_id NOS ZERO ()
+             ADD city NOS ZERO ()
+             ADD country_id NOS ZERO ()
+        )
+        OUTPUTLIST (city, city_id, country_id
+        )
+        WRAPPER (jdbc sakila_city)
+    );
+
+CHOWN admin VIEW sakila_city LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_country CASCADE;
+
+CREATE TABLE sakila_country I18N us_pst (
+    country_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    country:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12') 
+);
+
+ALTER TABLE sakila_country
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_country(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD country_id NOS ZERO ()
+             ADD country NOS ZERO ()
+        )
+        OUTPUTLIST (country, country_id
+        )
+        WRAPPER (jdbc sakila_country)
+    );
+
+CHOWN admin VIEW sakila_country LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_customer CASCADE;
+
+CREATE TABLE sakila_customer I18N us_pst (
+    customer_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    store_id:int (sourcetypedecimals = '0', sourcetypesize = '3', sourcetypeid = '-6'), 
+    first_name:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12'), 
+    last_name:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12'), 
+    email:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    address_id:int (sourcetypedecimals = '0', sourcetypesize = '5', sourcetypeid = '5'), 
+    active:int (sourcetypedecimals = '0', sourcetypesize = '1', sourcetypeid = '-6') 
+);
+
+ALTER TABLE sakila_customer
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_customer(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD customer_id NOS ZERO ()
+             ADD store_id NOS ZERO ()
+             ADD first_name NOS ZERO ()
+             ADD last_name NOS ZERO ()
+             ADD email NOS ZERO ()
+             ADD address_id NOS ZERO ()
+             ADD active NOS ZERO ()
+        )
+        OUTPUTLIST (active, address_id, customer_id, email, first_name, last_name, store_id
+        )
+        WRAPPER (jdbc sakila_customer)
+    );
+
+CHOWN admin VIEW sakila_customer LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_film CASCADE;
+
+CREATE TABLE sakila_film I18N us_pst (
+    film_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    title:text (sourcetypedecimals = '0', sourcetypesize = '255', sourcetypeid = '12'), 
+    description:text (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '12'), 
+    release_year:text (sourcetypedecimals = '0', sourcetypesize = '4', sourcetypeid = '0'), 
+    language_id:int (sourcetypedecimals = '0', sourcetypesize = '3', sourcetypeid = '-6'), 
+    original_language_id:int (sourcetypedecimals = '0', sourcetypesize = '3', sourcetypeid = '-6'), 
+    rental_duration:int (sourcetypedecimals = '0', sourcetypesize = '3', sourcetypeid = '-6'), 
+    rental_rate:double (sourcetypedecimals = '2', sourcetypesize = '4', sourcetypeid = '3'), 
+    length:int (sourcetypedecimals = '0', sourcetypesize = '5', sourcetypeid = '5'), 
+    replacement_cost:double (sourcetypedecimals = '2', sourcetypesize = '5', sourcetypeid = '3'), 
+    rating:text (sourcetypedecimals = '0', sourcetypesize = '6', sourcetypeid = '12'), 
+    special_features:text (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '12') 
+);
+
+ALTER TABLE sakila_film
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_film(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD film_id NOS ZERO ()
+             ADD title NOS ZERO ()
+             ADD description NOS ZERO ()
+             ADD release_year NOS ZERO ()
+             ADD language_id NOS ZERO ()
+             ADD original_language_id NOS ZERO ()
+             ADD rental_duration NOS ZERO ()
+             ADD rental_rate NOS ZERO ()
+             ADD length NOS ZERO ()
+             ADD replacement_cost NOS ZERO ()
+             ADD rating NOS ZERO ()
+             ADD special_features NOS ZERO ()
+        )
+        OUTPUTLIST (description, film_id, language_id, length, original_language_id, rating, release_year, rental_duration, rental_rate, replacement_cost, special_features, title
+        )
+        WRAPPER (jdbc sakila_film)
+    );
+
+CHOWN admin VIEW sakila_film LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_film_actor CASCADE;
+
+CREATE TABLE sakila_film_actor I18N us_pst (
+    actor_id:int (sourcetypedecimals = '0', sourcetypesize = '5', sourcetypeid = '5'), 
+    film_id:int (sourcetypedecimals = '0', sourcetypesize = '5', sourcetypeid = '5') 
+);
+
+ALTER TABLE sakila_film_actor
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_film_actor(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD actor_id NOS ZERO ()
+             ADD film_id NOS ZERO ()
+        )
+        OUTPUTLIST (actor_id, film_id
+        )
+        WRAPPER (jdbc sakila_film_actor)
+    );
+
+CHOWN admin VIEW sakila_film_actor LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_film_category CASCADE;
+
+CREATE TABLE sakila_film_category I18N us_pst (
+    film_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    category_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4') 
+);
+
+ALTER TABLE sakila_film_category
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_film_category(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD film_id NOS ZERO ()
+             ADD category_id NOS ZERO ()
+        )
+        OUTPUTLIST (category_id, film_id
+        )
+        WRAPPER (jdbc sakila_film_category)
+    );
+
+CHOWN admin VIEW sakila_film_category LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_inventory CASCADE;
+
+CREATE TABLE sakila_inventory I18N us_pst (
+    inventory_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    film_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    store_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4') 
+);
+
+ALTER TABLE sakila_inventory
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_inventory(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD inventory_id NOS ZERO ()
+             ADD film_id NOS ZERO ()
+             ADD store_id NOS ZERO ()
+        )
+        OUTPUTLIST (film_id, inventory_id, store_id
+        )
+        WRAPPER (jdbc sakila_inventory)
+    );
+
+CHOWN admin VIEW sakila_inventory LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_language CASCADE;
+
+CREATE TABLE sakila_language I18N us_pst (
+    language_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    name:text (sourcetypedecimals = '0', sourcetypesize = '20', sourcetypeid = '1') 
+);
+
+ALTER TABLE sakila_language
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_language(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD language_id NOS ZERO ()
+             ADD name NOS ZERO ()
+        )
+        OUTPUTLIST (language_id, name
+        )
+        WRAPPER (jdbc sakila_language)
+    );
+
+CHOWN admin VIEW sakila_language LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_payment CASCADE;
+
+CREATE TABLE sakila_payment I18N us_pst (
+    payment_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    customer_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    staff_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    rental_id:int (sourcetypedecimals = '0', sourcetypesize = '11', sourcetypeid = '4'), 
+    amount:double (sourcetypedecimals = '2', sourcetypesize = '5', sourcetypeid = '3') 
+);
+
+ALTER TABLE sakila_payment
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_payment(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD payment_id NOS ZERO ()
+             ADD customer_id NOS ZERO ()
+             ADD staff_id NOS ZERO ()
+             ADD rental_id NOS ZERO ()
+             ADD amount NOS ZERO ()
+        )
+        OUTPUTLIST (amount, customer_id, payment_id, rental_id, staff_id
+        )
+        WRAPPER (jdbc sakila_payment)
+    );
+
+CHOWN admin VIEW sakila_payment LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_rental CASCADE;
+
+CREATE TABLE sakila_rental I18N us_pst (
+    rental_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    inventory_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    customer_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    staff_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4') 
+);
+
+ALTER TABLE sakila_rental
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_rental(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD rental_id NOS ZERO ()
+             ADD inventory_id NOS ZERO ()
+             ADD customer_id NOS ZERO ()
+             ADD staff_id NOS ZERO ()
+        )
+        OUTPUTLIST (customer_id, inventory_id, rental_id, staff_id
+        )
+        WRAPPER (jdbc sakila_rental)
+    );
+
+CHOWN admin VIEW sakila_rental LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_staff CASCADE;
+
+CREATE TABLE sakila_staff I18N us_pst (
+    staff_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    first_name:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12'), 
+    last_name:text (sourcetypedecimals = '0', sourcetypesize = '45', sourcetypeid = '12'), 
+    address_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    picture:blob (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '2004'), 
+    email:text (sourcetypedecimals = '0', sourcetypesize = '50', sourcetypeid = '12'), 
+    store_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    active:int (sourcetypedecimals = '0', sourcetypesize = '1', sourcetypeid = '-6'), 
+    username:text (sourcetypedecimals = '0', sourcetypesize = '16', sourcetypeid = '12'), 
+    password:text (sourcetypedecimals = '0', sourcetypesize = '40', sourcetypeid = '12') 
+);
+
+ALTER TABLE sakila_staff
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_staff(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD staff_id NOS ZERO ()
+             ADD first_name NOS ZERO ()
+             ADD last_name NOS ZERO ()
+             ADD address_id NOS ZERO ()
+             ADD picture NOS ZERO ()
+             ADD email NOS ZERO ()
+             ADD store_id NOS ZERO ()
+             ADD active NOS ZERO ()
+             ADD username NOS ZERO ()
+             ADD password NOS ZERO ()
+        )
+        OUTPUTLIST (active, address_id, email, first_name, last_name, password, picture, staff_id, store_id, username
+        )
+        WRAPPER (jdbc sakila_staff)
+    );
+
+CHOWN admin VIEW sakila_staff LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS sakila_store CASCADE;
+
+CREATE TABLE sakila_store I18N us_pst (
+    store_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    manager_staff_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4'), 
+    address_id:int (sourcetypedecimals = '0', sourcetypesize = '0', sourcetypeid = '4') 
+);
+
+ALTER TABLE sakila_store
+     CACHE OFF
+     TIMETOLIVEINCACHE DEFAULT
+     ADD SEARCHMETHOD sakila_store(
+        I18N us_pst
+        CONSTRAINTS (
+             ADD store_id NOS ZERO ()
+             ADD manager_staff_id NOS ZERO ()
+             ADD address_id NOS ZERO ()
+        )
+        OUTPUTLIST (address_id, manager_staff_id, store_id
+        )
+        WRAPPER (jdbc sakila_store)
+    );
+
+CHOWN admin VIEW sakila_store LASTMODIFICATIONUSER admin;
+
+# #######################################
+# VIEWS
+# #######################################
+DROP VIEW IF EXISTS sakila_complete_address CASCADE;
+
+CREATE VIEW sakila_complete_address AS SELECT sakila_address.address_id AS address_id, sakila_address.address AS address, sakila_address.address2 AS address2, sakila_address.district AS district, sakila_address.postal_code AS postal_code, sakila_address.phone AS phone, sakila_address.city_id AS city_id, sakila_city.city AS city, sakila_city.country_id AS country_id, sakila_country.country AS country FROM (sakila_address AS sakila_address INNER JOIN sakila_city AS sakila_city ON sakila_address.city_id = sakila_city.city_id ) INNER JOIN sakila_country AS sakila_country ON sakila_city.country_id = sakila_country.country_id ;
+
+ALTER VIEW sakila_complete_address
+ LAYOUT (sakila_address = [20, 20, 200, 187], sakila_city = [280, 80, 200, 107], sakila_country = [540, 80, 200, 87]);
+
+CHOWN admin VIEW sakila_complete_address LASTMODIFICATIONUSER admin;
+
+DROP VIEW IF EXISTS all_addresses CASCADE;
+
+
+CREATE OR REPLACE VIEW all_addresses AS SELECT street, city, zip, upper(state) AS state, primary_phone, upper(country) AS country FROM (SELECT state, primary_phone, city, street, zip, country FROM acme_address SQL UNION SELECT NULL AS state, phone AS primary_phone, city, address AS street, postal_code AS zip, country FROM sakila_complete_address);
+
+ALTER VIEW all_addresses LAYOUT (acme_address = [30, 40, 200, 167], sakila_complete_address = [300, 90, 200, 225]);
+
+CHOWN admin VIEW all_addresses LASTMODIFICATIONUSER admin;
+
+# #######################################
+# ASSOCIATIONS
+# #######################################
+# No associations
+# #######################################
+# WEBSERVICES
+# #######################################
+# No web services
+# #######################################
+# WIDGETS
+# #######################################
+# No widgets
+# #######################################
+# WEBCONTAINER WEB SERVICE DEPLOYMENTS
+# #######################################
+# No deployed web services
+# #######################################
+# WEBCONTAINER WIDGET DEPLOYMENTS
+# #######################################
+# No deployed widgets
+# #######################################
+# USER PRIVILEGES
+# #######################################
+ALTER USER denodotestsamples
+GRANT ADMIN ON DATABASE;
+
+# #######################################
+# ROLE PRIVILEGES
+# #######################################
+# No role privileges
+# #######################################
+# Closing connection with database denodotestsamples
+# #######################################
+CLOSE;
+
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+EXIT SINGLE USER MODE;
