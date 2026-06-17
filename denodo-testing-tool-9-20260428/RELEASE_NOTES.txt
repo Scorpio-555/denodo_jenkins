@@ -1,0 +1,34 @@
+20260428
+--------
+#118084 - Improve memory management while processing huge unordered volumes of data
+
+20260325
+--------
+#116997 - Fix parallel execution
+
+20260121
+--------
+#113307 - Parallel query execution in Denodo Testing tool
+
+20251016
+--------
+#111993 - Enhancement To modify the CSVTestReporter of Denodo Testing Tool in order to report an empty cell for failing tests
+
+20251010
+--------
+#112363 - Set log4j-slf4j-impl Scope to Compile
+
+20241202
+--------
+#101187 - Add support for VQL PROCEDURE scripts
+
+20241119
+--------
+- #99907 - Update Denodo 9 VDP JDBC driver distributed version
+- #100564 - Update project dependencies to fix vulnerabilities
+- #100567 - Update naming and references for Denodo 9 version
+- #100590 - Code improvements and project cleanup
+
+20240419
+--------
+- First version of Denodo Testing Tool for Denodo 9.0
