@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW dv_denodo_us_customer_active FOLDER = '/search' AS SELECT bv_denodo_customer_list.customer AS customer, bv_denodo_customer_list.code AS code, bv_denodo_us_customer_url.active AS active, bv_denodo_customer_list.denodoversion_0 AS denodoversion_0, bv_denodo_customer_list.currentinfrastructure_0 AS currentinfrastructure_0, bv_denodo_customer_list.futureinfrastructure_0 AS futureinfrastructure_0 FROM bv_denodo_customer_list AS bv_denodo_customer_list INNER JOIN bv_denodo_us_customer_url AS bv_denodo_us_customer_url ON bv_denodo_customer_list.code = bv_denodo_us_customer_url.code  WHERE (bv_denodo_customer_list.country = 'United States' AND bv_denodo_customer_list.code is not null  AND bv_denodo_us_customer_url.code is not null  AND bv_denodo_us_customer_url.active is true );
+
+ALTER VIEW dv_denodo_us_customer_active
+ LAYOUT (bv_denodo_customer_list = [20, 20, 200, 225], bv_denodo_us_customer_url = [20, 275, 200, 85]);
+

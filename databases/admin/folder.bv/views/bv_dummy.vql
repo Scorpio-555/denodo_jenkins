@@ -1,0 +1,20 @@
+﻿CREATE OR REPLACE TABLE bv_dummy I18N us_mst (
+        column1:int (sourcetypeid = '4'),
+        column2:int (sourcetypeid = '4'),
+        column3:text (sourcetypeid = '12')
+    )
+    FOLDER = '/bv'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_dummy(
+        I18N us_mst
+        CONSTRAINTS (
+             ADD column1 (any) OPT ANY
+             ADD column2 (any) OPT ANY
+             ADD column3 (any) OPT ANY
+        )
+        OUTPUTLIST (column1, column2, column3
+        )
+        WRAPPER (custom ds_dummy)
+    );
+

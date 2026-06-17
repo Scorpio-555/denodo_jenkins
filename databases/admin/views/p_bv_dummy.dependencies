@@ -1,0 +1,5 @@
+﻿*/databases/admin/folder.bv/bv.vql
+*/databases/admin/folder.ds/ds.vql
+*/databases/admin/folder.ds/datasources/custom/ds_dummy.vql
+1/databases/admin/folder.bv/views/bv_dummy.vql
+*/databases/admin/folder.bv/views/bv_dummy.vql

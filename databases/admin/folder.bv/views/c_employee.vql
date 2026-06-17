@@ -1,0 +1,69 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC c_employee
+    FOLDER = '/bv'
+    DATASOURCENAME=ds_mssql
+    CATALOGNAME='${databases.admin.folder.bv.views.jdbc.c_employee.CATALOGNAME}' 
+    SCHEMANAME='${databases.admin.folder.bv.views.jdbc.c_employee.SCHEMANAME}' 
+    RELATIONNAME='C_EMPLOYEE7448643869655203477864534908195432007745918937035874' 
+    OUTPUTSCHEMA (
+        businessentityid = 'businessentityid' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  SORTABLE,
+        nationalidnumber = 'nationalidnumber' :'java.lang.String' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='15', sourcetypeid='12', sourcetypename='nvarchar')  SORTABLE,
+        loginid = 'loginid' :'java.lang.String' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='256', sourcetypeid='12', sourcetypename='nvarchar')  SORTABLE,
+        jobtitle = 'jobtitle' :'java.lang.String' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='50', sourcetypeid='12', sourcetypename='nvarchar')  SORTABLE,
+        birthdate = 'birthdate' :'java.time.LocalDate' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='10', sourcetypeid='12', sourcetypename='date')  SORTABLE,
+        maritalstatus = 'maritalstatus' :'java.lang.String' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='1', sourcetypeid='1', sourcetypename='nchar')  SORTABLE,
+        gender = 'gender' :'java.lang.String' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='1', sourcetypeid='1', sourcetypename='nchar')  SORTABLE,
+        hiredate = 'hiredate' :'java.time.LocalDate' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='10', sourcetypeid='12', sourcetypename='date')  SORTABLE,
+        salariedflag = 'salariedflag' :'java.lang.Boolean' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='1', sourcetypeid='-7', sourcetypename='bit')  SORTABLE,
+        vacationhours = 'vacationhours' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  SORTABLE,
+        sickleavehours = 'sickleavehours' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  SORTABLE,
+        currentflag = 'currentflag' :'java.lang.Boolean' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='1', sourcetypeid='-7', sourcetypename='bit')  SORTABLE,
+        rowguid = 'rowguid' :'java.lang.String' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='36', sourcetypeid='1', sourcetypename='char')  SORTABLE,
+        modifieddate = 'modifieddate' :'java.time.LocalDateTime' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='27', sourcetypeid='12', sourcetypename='datetime2')  SORTABLE,
+        rowstatus = 'rowStatus' :'java.lang.String' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='250', sourcetypeid='12', sourcetypename='varchar')  SORTABLE
+    );
+
+CREATE OR REPLACE TABLE c_employee I18N us_mst (
+        businessentityid:int (sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10'),
+        nationalidnumber:text (sourcetypeid = '-9', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '15'),
+        loginid:text (sourcetypeid = '-9', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '256'),
+        jobtitle:text (sourcetypeid = '-9', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '50'),
+        birthdate:localdate (sourcetypeid = '91', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '10'),
+        maritalstatus:text (sourcetypeid = '-15', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '1'),
+        gender:text (sourcetypeid = '-15', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '1'),
+        hiredate:localdate (sourcetypeid = '91', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '10'),
+        salariedflag:boolean (sourcetypeid = '-7', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '1'),
+        vacationhours:int (sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10'),
+        sickleavehours:int (sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10'),
+        currentflag:boolean (sourcetypeid = '-7', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '1'),
+        rowguid:text (sourcetypeid = '1', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '36'),
+        modifieddate:timestamp (sourcetypeid = '93', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '27'),
+        rowstatus:text (sourcetypeid = '12', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '250')
+    )
+    FOLDER = '/bv'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD c_employee(
+        I18N us_mst
+        CONSTRAINTS (
+             ADD businessentityid (any) OPT ANY
+             ADD nationalidnumber (any) OPT ANY
+             ADD loginid (any) OPT ANY
+             ADD jobtitle (any) OPT ANY
+             ADD birthdate (any) OPT ANY
+             ADD maritalstatus (any) OPT ANY
+             ADD gender (any) OPT ANY
+             ADD hiredate (any) OPT ANY
+             ADD salariedflag (any) OPT ANY
+             ADD vacationhours (any) OPT ANY
+             ADD sickleavehours (any) OPT ANY
+             ADD currentflag (any) OPT ANY
+             ADD rowguid (any) OPT ANY
+             ADD modifieddate (any) OPT ANY
+             ADD rowstatus (any) OPT ANY
+        )
+        OUTPUTLIST (birthdate, businessentityid, currentflag, gender, hiredate, jobtitle, loginid, maritalstatus, modifieddate, nationalidnumber, rowguid, rowstatus, salariedflag, sickleavehours, vacationhours
+        )
+        WRAPPER (jdbc c_employee)
+    );
+

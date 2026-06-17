@@ -1,0 +1,34 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE JDBC oracle_ai26
+    FOLDER = '/ds'
+    DRIVERCLASSNAME = 'oracle.jdbc.OracleDriver'
+    DATABASEURI = '${databases.admin.folder.ds.datasources.jdbc.oracle_ai26.DATABASEURI}'
+    USERNAME = '${databases.admin.folder.ds.datasources.jdbc.oracle_ai26.USERNAME}'
+    USERPASSWORD = '${databases.admin.folder.ds.datasources.jdbc.oracle_ai26.USERPASSWORD}' ${databases.admin.folder.ds.datasources.jdbc.oracle_ai26.USERPASSWORD.ENCRYPTED}
+    CLASSPATH = 'oracle-21c'
+    DATABASENAME = 'oracle'
+    DATABASEVERSION = '19c'
+    FETCHSIZE = 1000
+    VALIDATIONQUERY = 'SELECT COUNT(*) FROM SYS.DUAL'
+    INITIALSIZE = 4
+    MAXIDLE = -1
+    MINIDLE = 0
+    MAXACTIVE = 20
+    EXHAUSTEDACTION = 1
+    TESTONBORROW = true
+    TESTONRETURN = false
+    TESTWHILEIDLE = false
+    TIMEBETWEENEVICTION = -1
+    NUMTESTPEREVICTION = 3
+    MINEVICTABLETIME = 1800000
+    POOLPREPAREDSTATEMENTS = false
+    MAXOPENPREPAREDSTATEMENTS = -1
+    PROPERTIES ('includeSynonyms'='false', 'remarksReporting'='false')
+    DATA_LOAD_CONFIGURATION (
+        BATCHINSERTSIZE = 200
+    )
+    SOURCECONFIGURATION (
+        delegateaggregatefunctionslist = (avg, count, max, median, min, stdev, stdevp, sum, var, varp),
+        delegatescalarfunctionslist = (abs, acos, addday, addhour, addmillis, addminute, addmonth, addsecond, addweek, addyear, ascii, asin, atan, atan2, case, cast, ceil, char, coalesce, concat, convert_timezone, convert_timezone(evaluate_literal), cos, cot, current_date, degrees, deletespaces, div, endwith, exp, expression_list, firstdayofmonth, firstdayofweek, floor, formatdate, getday, getdayofweek, getdayofyear, getdaysbetween, gethour, getmicrosecond, getmillisecond, getminute, getmonth, getmonthsbetween, getnanosecond, getquarter, getsecond, gettimefrommillis, gettimeinmillis, getweek, getweeksbetween, getyear, hash, hash_function, initcap, instr, lastdayofmonth, lastdayofweek, left, leftpad, len, ln, localtimestamp(evaluate_literal), log, lower, ltrim, max, min, mod, mult, nextweekday, now, nullif, pi, position, pow, power, previousweekday, propercase, radians, rand, regexp, removeaccents, repeat, replace, right, rightpad, round, rownum, rtrim, sign, sin, sql_trim, sqrt, startwith, substr, substring, subtract, sum, tan, textcat, to_date, to_interval_day_second, to_interval_year_month, to_localdate, to_timestamp, to_timestamptz, trim, trunc, upper, xmlquery, xpath)
+    );
+

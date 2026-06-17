@@ -1,0 +1,13 @@
+﻿CREATE OR REPLACE VQL PROCEDURE saved_queries
+(_tag OUT VARCHAR, _description OUT VARCHAR, _query OUT VARCHAR)
+BEGIN
+    RETURN ROW ( _tag, _description, _query) VALUES ('intersect_vdp_logs', 'param1 vdp.log shows only the rows with error message in common with param2', 'select * from <param1> where message in (select distinct message from <param2>)');
+    RETURN ROW ( _tag, _description, _query) VALUES ('create_new_view', 'vql to create a view from a query', 'Create or replace view <view name> FOLDER = ''<path>'' AS <query>;');
+    RETURN ROW ( _tag, _description, _query) VALUES ('agg_vdp_log', 'aggregate vdp.log by message', 'SELECT first(_id) AS _id, first(milliseconds) AS milliseconds, first(thread) AS thread, first(priority) AS priority, first(_timestamp) AS _timestamp, category AS category, message AS message, split(''_=_'', first(_trace)) AS _trace, count(_id) AS num_occurances, nest(_timestamp) AS list_timestamps FROM <bv vdp.log> GROUP BY category, message, getday(_timestamp)');
+    RETURN ROW ( _tag, _description, _query) VALUES ('union_search_log', 'multi-log parameterized message search', 'Select ''dv_agg_<n log>'' as source, _id, milliseconds, thread, priority, _timestamp, category, message, _trace from support_cases.dv_agg_<n log> where message like ''@SEARCH_STRING'' UNION Select ''dv_agg_<n+1 log>'' as source, _id, milliseconds, thread, priority, _timestamp, category, message, _trace from support_cases.dv_agg_<n+1 log> where message like ''@SEARCH_STRING''');
+    RETURN ROW ( _tag, _description, _query) VALUES ('timestamp_where_clause', 'syntax for filtering by timestamp', 'WHERE _timestamp [< | > | =] TO_TIMESTAMP(''yyyy-MM-dd''''T''''HH:mm:ss.SSS'', ''2024-07-15T00:00:00.000'')');
+    RETURN ROW ( _tag, _description, _query) VALUES ('cache_preload', 'context clause to load the cache', 'CONTEXT( ''cache_preload'' = ''true'', ''cache_invalidate'' = ''all_rows'', ''cache_return_query_results'' = ''false'', ''cache_wait_for_load'' = ''true'')');
+    RETURN ROW ( _tag, _description, _query) VALUES ('new_tag_here', 'new description here', 'select 1; //new query here');
+
+END;
+

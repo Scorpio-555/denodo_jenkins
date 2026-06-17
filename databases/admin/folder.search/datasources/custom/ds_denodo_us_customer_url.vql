@@ -1,0 +1,22 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE CUSTOM ds_denodo_us_customer_url
+    FOLDER = '/search'
+    CLASSNAME='com.denodo.vdb.contrib.wrapper.xls.ExcelWrapper';
+
+CREATE OR REPLACE WRAPPER CUSTOM ds_denodo_us_customer_url
+    FOLDER = '/search'
+    DATASOURCENAME=ds_denodo_us_customer_url
+    PARAMETERS (
+      'Type of file' = 'Excel 2007 or later (*.xlsx)',
+      'File location' = ROUTE LOCAL 'LocalConnection' '${databases.admin.folder.search.views.custom.ds_denodo_us_customer_url.File location.ROUTE.LOCAL.PATH}',
+      'Extract data from all sheets' = false,
+      'Extract sheet name as a new column' = false,
+      'Has headers' = true,
+      'Stream tuples' = true
+    )
+    OUTPUTSCHEMA (
+        code = 'code' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        url = 'url' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        active = 'active' : 'java.lang.Boolean' (OPT) (sourcetypeid='16')  SORTABLE
+    );
+

@@ -1,0 +1,22 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE CUSTOM ds_dummy
+    FOLDER = '/ds'
+    CLASSNAME='com.denodo.vdb.contrib.wrapper.xls.ExcelWrapper';
+
+CREATE OR REPLACE WRAPPER CUSTOM ds_dummy
+    FOLDER = '/ds'
+    DATASOURCENAME=ds_dummy
+    PARAMETERS (
+      'Type of file' = 'Excel 2007 or later (*.xlsx)',
+      'File location' = ROUTE LOCAL 'LocalConnection' '${databases.admin.folder.ds.views.custom.ds_dummy.File location.ROUTE.LOCAL.PATH}',
+      'Extract data from all sheets' = false,
+      'Extract sheet name as a new column' = false,
+      'Has headers' = true,
+      'Stream tuples' = true
+    )
+    OUTPUTSCHEMA (
+        column1 = 'column1' : 'java.lang.Integer' (OPT) (sourcetypeid='4')  SORTABLE,
+        column2 = 'column2' : 'java.lang.Integer' (OPT) (sourcetypeid='4')  SORTABLE,
+        column3 = 'column3' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE
+    );
+

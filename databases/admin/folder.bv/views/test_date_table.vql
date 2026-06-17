@@ -1,0 +1,33 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC test_date_table
+    FOLDER = '/bv'
+    DATASOURCENAME=ds_mssql
+    CATALOGNAME='${databases.admin.folder.bv.views.jdbc.test_date_table.CATALOGNAME}' 
+    SCHEMANAME='${databases.admin.folder.bv.views.jdbc.test_date_table.SCHEMANAME}' 
+    RELATIONNAME='test_date_table' 
+    OUTPUTSCHEMA (
+        row_id = 'row_id' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  NOT NULL SORTABLE,
+        test_date_field = 'test_date_field' :'java.time.LocalDate' (OPT) (sourcetypedecimals='0', sourcetyperadix='0', sourcetypesize='10', sourcetypeid='12', sourcetypename='date')  SORTABLE
+    )
+    CONSTRAINT 'PK__test_dat__6965AB57D907158B' PRIMARY KEY ( 'row_id' )
+    INDEX 'PK__test_dat__6965AB57D907158B' CLUSTER UNIQUE PRIMARY ( 'row_id' );
+
+CREATE OR REPLACE TABLE test_date_table I18N us_mst (
+        row_id:int (notnull, sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10'),
+        test_date_field:localdate (sourcetypeid = '91', sourcetyperadix = '0', sourcetypedecimals = '0', sourcetypesize = '10')
+    )
+    FOLDER = '/bv'
+    CONSTRAINT 'PK__test_dat__6965AB57D907158B' PRIMARY KEY ( 'row_id' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD test_date_table(
+        I18N us_mst
+        CONSTRAINTS (
+             ADD row_id (any) OPT ANY
+             ADD test_date_field (any) OPT ANY
+        )
+        OUTPUTLIST (row_id, test_date_field
+        )
+        WRAPPER (jdbc test_date_table)
+    );
+

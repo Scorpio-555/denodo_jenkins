@@ -1,0 +1,30 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE CUSTOM ds_denodo_customer_list
+    FOLDER = '/search'
+    CLASSNAME='com.denodo.vdb.contrib.wrapper.xls.ExcelWrapper';
+
+CREATE OR REPLACE WRAPPER CUSTOM ds_denodo_customer_list
+    FOLDER = '/search'
+    DATASOURCENAME=ds_denodo_customer_list
+    PARAMETERS (
+      'Type of file' = 'Excel 2007 or later (*.xlsx)',
+      'File location' = ROUTE LOCAL 'LocalConnection' '${databases.admin.folder.search.views.custom.ds_denodo_customer_list.File location.ROUTE.LOCAL.PATH}',
+      'Extract data from all sheets' = false,
+      'Extract sheet name as a new column' = false,
+      'Has headers' = true,
+      'Stream tuples' = true
+    )
+    OUTPUTSCHEMA (
+        customer = 'Customer' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        country = 'Country' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        localsupportcenter_0 = 'Local Support Center' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        denodoversion_0 = 'denodo version' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        activemaintenance_0 = 'active maintenance' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        supportlevel_0 = 'support level' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        code = 'code' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        deliverymanager_0 = 'Delivery Manager' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        supportaccountmanager_0 = 'Support Account Manager' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        currentinfrastructure_0 = 'Current Infrastructure' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE,
+        futureinfrastructure_0 = 'Future Infrastructure' : 'java.lang.String' (OPT) (sourcetypeid='12')  SORTABLE
+    );
+

@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE VIEW p_bv_dummy AS SELECT bv_dummy.column1 AS column1, bv_dummy.column2 AS column2, replace('\N', bv_dummy.column3, NULL) AS column3 FROM bv_dummy;
+
+ALTER VIEW p_bv_dummy
+ LAYOUT (bv_dummy = [20, 20, 200, 200]);
+

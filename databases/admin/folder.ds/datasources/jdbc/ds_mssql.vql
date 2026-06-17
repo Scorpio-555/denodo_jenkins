@@ -1,0 +1,35 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE JDBC ds_mssql
+    FOLDER = '/ds'
+    DRIVERCLASSNAME = 'net.sourceforge.jtds.jdbc.Driver'
+    DATABASEURI = '${databases.admin.folder.ds.datasources.jdbc.ds_mssql.DATABASEURI}'
+    USERNAME = '${databases.admin.folder.ds.datasources.jdbc.ds_mssql.USERNAME}'
+    USERPASSWORD = '${databases.admin.folder.ds.datasources.jdbc.ds_mssql.USERPASSWORD}' ${databases.admin.folder.ds.datasources.jdbc.ds_mssql.USERPASSWORD.ENCRYPTED}
+    CLASSPATH = 'denodo-jtds-1.3.1'
+    DATABASENAME = 'sqlserver'
+    DATABASEVERSION = '2012'
+    FETCHSIZE = 1000
+    VALIDATIONQUERY = 'Select 1'
+    INITIALSIZE = 4
+    MAXIDLE = -1
+    MINIDLE = 0
+    MAXACTIVE = 20
+    EXHAUSTEDACTION = 1
+    TESTONBORROW = true
+    TESTONRETURN = false
+    TESTWHILEIDLE = false
+    TIMEBETWEENEVICTION = -1
+    NUMTESTPEREVICTION = 3
+    MINEVICTABLETIME = 1800000
+    POOLPREPAREDSTATEMENTS = false
+    MAXOPENPREPAREDSTATEMENTS = -1
+    DATA_LOAD_CONFIGURATION (
+        BATCHINSERTSIZE = 1000
+    )
+    SOURCECONFIGURATION (
+        delegate_binary_orderby_collation = 'Latin1_General_BIN',
+        delegatescalarfunctionslist = (abs, acos, addday, addhour, addminute, addmonth, addsecond, addweek, addyear, ascii, asin, atan, atan2, case, cast, ceil, char, coalesce, concat, convert_timezone(evaluate_literal), cos, cot, current_date, degrees, div, exp, firstdayofmonth, firstdayofweek, floor, formatdate, getday, getdayofweek, getdayofyear, getdaysbetween, gethour, getmicrosecond, getmillisecond, getminute, getmonth, getmonthsbetween, getnanosecond, getsecond, getyear, instr, lastdayofmonth, lastdayofweek, len, ln, log, lower, ltrim, mod, mult, nextweekday, now, nullif, pi, position, pow, power, previousweekday, radians, rand, removeaccents, repeat, replace, round, rtrim, sign, sin, sqrt, substr, substring, subtract, sum, tan, textcat, to_date, to_localdate, to_time, to_timestamp, to_timestamptz, trim, trunc, upper, xmlquery, xpath),
+        delegateanalyticfunctionslist = (avg, count, cume_dist, dense_rank, first_value, lag, last_value, lead, max, min, ntile, percent_rank, percentile_cont, percentile_disc, rank, row_number, sum),
+        delegate_offset_restriction = 'NONE'
+    );
+

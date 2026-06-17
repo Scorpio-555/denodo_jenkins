@@ -1,0 +1,20 @@
+﻿CREATE OR REPLACE TABLE bv_denodo_us_customer_url I18N us_mst (
+        code:text (sourcetypeid = '12'),
+        url:text (sourcetypeid = '12'),
+        active:boolean (sourcetypeid = '16')
+    )
+    FOLDER = '/search'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_denodo_us_customer_url(
+        I18N us_mst
+        CONSTRAINTS (
+             ADD code (any) OPT ANY
+             ADD url (any) OPT ANY
+             ADD active (any) OPT ANY
+        )
+        OUTPUTLIST (active, code, url
+        )
+        WRAPPER (custom ds_denodo_us_customer_url)
+    );
+

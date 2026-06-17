@@ -1,0 +1,30 @@
+﻿CREATE OR REPLACE VQL PROCEDURE procedure_generate_all_create_vql_upd
+(message OUT VARCHAR)
+AS (
+    CURSOR cursortables IS 'SELECT table_name FROM GET_JDBC_DATASOURCE_TABLES(''my_datasource_name'', ''my_catalog_name'', ''my_schema_name'');';
+    cursortablename cursortables%ROWTYPE;
+    CURSOR cursorvqlstatements IS 'SELECT creation_vql FROM GENERATE_VQL_TO_CREATE_JDBC_BASE_VIEW(''my_datasource_name'', ''my_catalog_name'', ''my_schema_name'', '':tableparam'' , ''bv'':table_param'''', ''/2.base views/test_base_views'',NULL,''my_db_name'');';
+    cursorvql cursorvqlstatements%ROWTYPE;
+    table_name VARCHAR;
+    vql_statement VARCHAR;
+)
+BEGIN
+    OPEN cursortables;
+    LOOP 
+        FETCH cursortables INTO cursortablename;
+        table_name:=cursortablename.table_name;
+        OPEN cursorvqlstatements PARAMETERS ( table_param ) VALUES ( table_name );
+        LOOP 
+                FETCH cursorvqlstatements INTO cursorvql;
+                vql_statement:=cursorvql.creation_vql;
+                EXECUTE ':param' PARAMETERS ( param ) VALUES ( vql_statement );
+                EXIT WHEN cursorvqlstatements%NOTFOUND;
+            END LOOP;
+        CLOSE cursorvqlstatements;
+        EXIT WHEN cursortables%NOTFOUND;
+    END LOOP;
+    CLOSE cursortables;
+    RETURN ROW ( message) VALUES ('Base Views Created Successfully!');
+
+END;
+

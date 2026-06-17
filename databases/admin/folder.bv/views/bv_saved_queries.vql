@@ -1,0 +1,2 @@
+﻿CREATE OR REPLACE VIEW bv_saved_queries FOLDER = '/bv' AS SELECT _tag AS _tag, _description AS _description, _query AS _query FROM saved_queries() CONTEXT ('I18N' = 'us_mst_mdt');
+

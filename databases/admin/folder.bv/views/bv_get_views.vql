@@ -1,0 +1,2 @@
+﻿CREATE OR REPLACE VIEW bv_get_views FOLDER = '/bv' AS SELECT database_name, name AS view_name FROM get_views();
+

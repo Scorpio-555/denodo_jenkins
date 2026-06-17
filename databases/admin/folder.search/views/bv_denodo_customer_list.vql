@@ -1,0 +1,36 @@
+﻿CREATE OR REPLACE TABLE bv_denodo_customer_list I18N us_mst (
+        customer:text (sourcetypeid = '12'),
+        country:text (sourcetypeid = '12'),
+        localsupportcenter_0:text (sourcetypeid = '12'),
+        denodoversion_0:text (sourcetypeid = '12'),
+        activemaintenance_0:text (sourcetypeid = '12'),
+        supportlevel_0:text (sourcetypeid = '12'),
+        code:text (sourcetypeid = '12'),
+        deliverymanager_0:text (sourcetypeid = '12'),
+        supportaccountmanager_0:text (sourcetypeid = '12'),
+        currentinfrastructure_0:text (sourcetypeid = '12'),
+        futureinfrastructure_0:text (sourcetypeid = '12')
+    )
+    FOLDER = '/search'
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_denodo_customer_list(
+        I18N us_mst
+        CONSTRAINTS (
+             ADD customer (any) OPT ANY
+             ADD country (any) OPT ANY
+             ADD localsupportcenter_0 (any) OPT ANY
+             ADD denodoversion_0 (any) OPT ANY
+             ADD activemaintenance_0 (any) OPT ANY
+             ADD supportlevel_0 (any) OPT ANY
+             ADD code (any) OPT ANY
+             ADD deliverymanager_0 (any) OPT ANY
+             ADD supportaccountmanager_0 (any) OPT ANY
+             ADD currentinfrastructure_0 (any) OPT ANY
+             ADD futureinfrastructure_0 (any) OPT ANY
+        )
+        OUTPUTLIST (activemaintenance_0, code, country, currentinfrastructure_0, customer, deliverymanager_0, denodoversion_0, futureinfrastructure_0, localsupportcenter_0, supportaccountmanager_0, supportlevel_0
+        )
+        WRAPPER (custom ds_denodo_customer_list)
+    );
+
