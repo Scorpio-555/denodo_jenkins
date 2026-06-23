@@ -1,0 +1,4 @@
+﻿CREATE OR REPLACE PROCEDURE sp_poc
+    CLASSNAME='poc.StoredProcExecutesCustomFunction'
+    JARS 'poc';
+

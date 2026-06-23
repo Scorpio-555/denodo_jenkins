@@ -27,6 +27,7 @@ CREATE OR REPLACE DATASOURCE JDBC ds_mssql
         BATCHINSERTSIZE = 1000
     )
     SOURCECONFIGURATION (
+        delegateoffset = false,
         delegate_binary_orderby_collation = 'Latin1_General_BIN',
         delegatescalarfunctionslist = (abs, acos, addday, addhour, addminute, addmonth, addsecond, addweek, addyear, ascii, asin, atan, atan2, case, cast, ceil, char, coalesce, concat, convert_timezone(evaluate_literal), cos, cot, current_date, degrees, div, exp, firstdayofmonth, firstdayofweek, floor, formatdate, getday, getdayofweek, getdayofyear, getdaysbetween, gethour, getmicrosecond, getmillisecond, getminute, getmonth, getmonthsbetween, getnanosecond, getsecond, getyear, instr, lastdayofmonth, lastdayofweek, len, ln, log, lower, ltrim, mod, mult, nextweekday, now, nullif, pi, position, pow, power, previousweekday, radians, rand, removeaccents, repeat, replace, round, rtrim, sign, sin, sqrt, substr, substring, subtract, sum, tan, textcat, to_date, to_localdate, to_time, to_timestamp, to_timestamptz, trim, trunc, upper, xmlquery, xpath),
         delegateanalyticfunctionslist = (avg, count, cume_dist, dense_rank, first_value, lag, last_value, lead, max, min, ntile, percent_rank, percentile_cont, percentile_disc, rank, row_number, sum),
